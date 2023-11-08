@@ -2,7 +2,11 @@ from rest_framework import viewsets, generics
 from django.shortcuts import get_object_or_404
 
 from posts.models import Genre, Post, Review, Comment, Playlist
-from .serializers import PostSerializer, GenreSerializer, ReviewSerializer, CommentSerializer, PlaylistSerializer
+from .serializers import (PostSerializer,
+                          GenreSerializer,
+                          ReviewSerializer,
+                          CommentSerializer,
+                          PlaylistSerializer)
 
 
 class PostViewSet(viewsets.ModelViewSet):
