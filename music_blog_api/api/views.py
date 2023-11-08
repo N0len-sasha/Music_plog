@@ -1,8 +1,8 @@
 from rest_framework import viewsets, generics
 from django.shortcuts import get_object_or_404
 
-from posts.models import Genre, Post, Review
-from .serializers import PostSerializer, GenreSerializer, ReviewSerializer
+from posts.models import Genre, Post, Review, Comment
+from .serializers import PostSerializer, GenreSerializer, ReviewSerializer, CommentSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -49,3 +49,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
         post = instance.post
         instance.delete()
         self.update_post_rating(post)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        return self.get_review().comments.all()
+
+    def get_review(self):
+        return get_object_or_404(Review, id=self.kwargs.get('review_id'))
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user, review=self.get_review())
