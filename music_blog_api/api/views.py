@@ -1,8 +1,8 @@
 from rest_framework import viewsets, generics
 from django.shortcuts import get_object_or_404
 
-from posts.models import Genre, Post, Review, Comment
-from .serializers import PostSerializer, GenreSerializer, ReviewSerializer, CommentSerializer
+from posts.models import Genre, Post, Review, Comment, Playlist
+from .serializers import PostSerializer, GenreSerializer, ReviewSerializer, CommentSerializer, PlaylistSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -63,3 +63,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, review=self.get_review())
+
+
+class PlaylistViewSet(viewsets.ModelViewSet):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistSerializer
+
+    def get_queryset(self):
+        playlist_id = self.kwargs.get('playlist_id')
+        return Playlist.objects.filter(id=playlist_id)

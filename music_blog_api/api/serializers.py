@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from posts.models import Genre, Post, Review, Comment
+from posts.models import Genre, Post, Review, Comment, Playlist
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -47,3 +47,15 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
         reaf_only_fields = ('review',)
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    posts = serializers.SlugRelatedField(
+        queryset=Post.objects.all(),
+        many=True,
+        slug_field='name'
+    )
+
+    class Meta:
+        model = Playlist
+        fields = ['id', 'name', 'posts']

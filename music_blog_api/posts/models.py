@@ -65,4 +65,10 @@ class Comment(BaseModel):
     def __str__(self):
         self.text[:SLICE_TEXT]
 
-# class Playlist
+
+class Playlist(models.Model):
+    name = models.CharField(max_length=MAX_NAME_LENGHT)
+    posts = models.ManyToManyField(
+        Post,
+        related_name='playlist',
+    )
