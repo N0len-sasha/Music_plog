@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from posts.models import Genre, Post
+from posts.models import Genre, Post, Review
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -15,10 +15,24 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
+        read_only = ('rating',)
 
 
 class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True)
+    score = serializers.IntegerField(min_value=1, max_value=5)
+    post = serializers.SlugRelatedField(
+        slug_field='id', read_only=True
+    )
+
+    class Meta:
+        model = Review
         fields = '__all__'
