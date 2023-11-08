@@ -16,10 +16,18 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    class Meta:
+        related_name = 'Пост'
+        related_name_pural = 'Посты'
+
 
 class GenreViewSet(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+
+    class Meta:
+        related_name = 'Жанр'
+        related_name_pural = 'Жанры'
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -54,6 +62,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
         instance.delete()
         self.update_post_rating(post)
 
+    class Meta:
+        related_name = 'Отзыв'
+        related_name_pural = 'Отзывы'
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
@@ -68,6 +80,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, review=self.get_review())
 
+    class Meta:
+        related_name = 'Комментарий'
+        related_name_pural = 'Комментарии'
+
 
 class PlaylistViewSet(viewsets.ModelViewSet):
     queryset = Playlist.objects.all()
@@ -76,3 +92,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         playlist_id = self.kwargs.get('playlist_id')
         return Playlist.objects.filter(id=playlist_id)
+
+    class Meta:
+        related_name = 'Плейлист'
+        related_name_pural = 'Плейлисты'
