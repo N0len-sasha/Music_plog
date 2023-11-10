@@ -32,10 +32,10 @@ class Genre(models.Model):
 class Post(BaseModel):
     name = models.CharField(max_length=MAX_NAME_LENGHT)
     pub_date = models.DateField(auto_now_add=True)
-    image = models.ImageField(upload_to='posts/images/',
+    image = models.ImageField(upload_to='images/',
                               null=True,
                               blank=True)
-    audio = models.FileField(upload_to='posts/audio/',
+    audio = models.FileField(upload_to='audio/',
                              null=True,
                              blank=True)
     description = models.TextField(max_length=MAX_DESCTEXT_LENGHT,

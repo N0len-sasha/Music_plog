@@ -11,11 +11,19 @@ class PostSerializer(serializers.ModelSerializer):
         many=True,
         slug_field='slug'
     )
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = '__all__'
         read_only = ('rating',)
+
+    def get_rating(self, obj):
+        reviews = Review.objects.filter(post=obj.id)
+        if reviews:
+            total_score = sum(review.score for review in reviews)
+            return total_score / len(reviews)
+        return 0.0
 
 
 class GenreSerializer(serializers.ModelSerializer):
