@@ -3,3 +3,24 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
   }
+
+.text-left {
+    text-align: left !important;
+}
+
+.detail-bold-large {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.text-green{
+  color: rgb(0, 255, 0);
+}
+
+.text-orange{
+  color: orange;
+}
+
+.text-red{
+  color: red;
+}

@@ -13,5 +13,8 @@ urlpatterns = [
          name='about'),
     path('profile/',
          views.ProfilePageView.as_view(),
-         name='profile')
+         name='profile'),
+    path('posts/<int:post_id>/',
+         views.PostDetailView.as_view(),
+         name='post_detail')
 ]

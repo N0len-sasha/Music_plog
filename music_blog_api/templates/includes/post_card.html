@@ -5,19 +5,37 @@
         <div class="img-container overflow-hidden" style="border-radius: 10px;">
             <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.name }}">
         </div>
-        <h5 class="card-title text-uppercase font-weight-bold">{{ post.name }}</h5>
+        <h5 class="card-title text-uppercase font-weight-bold">{{ post.name|truncatewords:30 }}</h5>
         <div class="d-flex justify-content-around mt-3">
-            <a href="#" class="d-flex align-items-center justify-content-center">
+            <a href="{% url 'blog:post_detail' post.id %}" class="d-flex align-items-center justify-content-center">
                 <img src="{% static 'svg/detail.svg' %}" alt="Detail" style="width: 2em; height: 2em; border-radius: 50%;">
             </a>
-            <a href="#" class="d-flex align-items-center justify-content-center">
+            <audio id="audioPlayer{{ post.id }}" src="{{ post.audio }}" preload="auto"></audio>
+                <script>
+                    function playAudio{{ post.id }}() {
+                        var audioPlayer = document.getElementById('audioPlayer{{ post.id }}');
+                        
+                        if (audioPlayer.src) {
+                            if (audioPlayer.paused) {
+                                audioPlayer.play();
+                            } else {
+                                audioPlayer.pause();
+                                audioPlayer.currentTime = 0;
+                            }
+                        }
+                    }
+                </script>
+            <button class="btn" onclick="playAudio{{ post.id }}()">
                 <img src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
-            </a>
+            </button>
             <a href="#" class="d-flex align-items-center justify-content-center">
                 <img src="{% static 'svg/favorites.svg' %}" alt="Favorites" style="width: 2em; height: 2em; border-radius: 50%;">
             </a>
         </div>
-        <p class="card-text mt-3">Music rating: {{ post.rating }}</p>
+        <div class="d-flex justify-content-around mt-3">
+            <p class="card-text mt-3">Рейтинг: {{ post.rating }}</p>
+            <p class="card-text mt-3">Автор: {{ post.author|truncatewords:10 }}</p>
+        </div>
         </div>
     </div>
 </div>

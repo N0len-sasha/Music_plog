@@ -7,7 +7,13 @@ class PlaylistAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'pub_date', 'rating')
+    list_display = ('id', 'name', 'pub_date', 'rating', 'display_genres')
+    filter_horizontal = ('genre',)
+
+    def display_genres(self, obj):
+        return ', '.join([genre.name for genre in obj.genre.all()])
+
+    display_genres.short_description = 'Genres'
 
 
 class GenreAdmin(admin.ModelAdmin):
