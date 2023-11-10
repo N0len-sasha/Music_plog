@@ -24,3 +24,8 @@ body {
 .text-red{
   color: red;
 }
+
+.page-item a.page-link {
+  background-color: rgba(255, 255, 255, 0.082);
+  color: white; 
+}

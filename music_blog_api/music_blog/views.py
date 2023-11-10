@@ -10,7 +10,7 @@ from .constants import PAGINATION
 
 class IndexView(ListView):
     template_name = "blog/index.html"
-    context_object_name = "page_obj"
+    context_object_name = "posts"
     paginate_by = PAGINATION
 
     def get_queryset(self):
