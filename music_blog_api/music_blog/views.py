@@ -149,7 +149,8 @@ class PlayListView(ListView):
 
 class CreatePlayListView(CreateView):
     model = Playlist
-    template_name = 'blog/create_playlist'
+    template_name = 'blog/playlist_create.html'
+    fields = ('name', 'image')
 
     def form_valid(self, form):
         form.instance.author = self.request.user

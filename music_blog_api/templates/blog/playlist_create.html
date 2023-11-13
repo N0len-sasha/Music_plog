@@ -1,2 +1,11 @@
 {% extends "base.html" %}
-Создание Playlist
+{% load django_bootstrap5 %}
+{% block content %}
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        {% bootstrap_form form %}
+      {% bootstrap_button button_type="submit" content="Отправить" %}
+    </form>
+  </div>
+{% endblock %}
