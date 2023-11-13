@@ -30,24 +30,29 @@ class Genre(models.Model):
 
 
 class Post(BaseModel):
-    name = models.CharField(max_length=MAX_NAME_LENGHT)
-    pub_date = models.DateField(auto_now_add=True)
+    name = models.CharField(max_length=MAX_NAME_LENGHT,
+                            verbose_name='Название песни')
     image = models.ImageField(upload_to='images/',
                               null=True,
-                              blank=True)
+                              blank=True,
+                              verbose_name='Изображение(обложка)')
     audio = models.FileField(upload_to='audio/',
                              null=True,
-                             blank=True)
+                             blank=True,
+                             verbose_name='Аудио файл(mp3)')
     description = models.TextField(max_length=MAX_DESCTEXT_LENGHT,
                                    null=True,
-                                   blank=True)
+                                   blank=True,
+                                   verbose_name='Описание')
     genre = models.ManyToManyField(
         Genre,
         related_name='posts',
+        verbose_name='Жанр'
     )
     rating = models.FloatField(default=0.0)
 
     class Meta:
+        ordering = ('-pub_date',)
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
 
@@ -56,7 +61,8 @@ class Post(BaseModel):
 
 
 class Review(BaseModel):
-    text = models.CharField(max_length=MAX_DESCTEXT_LENGHT)
+    text = models.CharField(max_length=MAX_DESCTEXT_LENGHT,
+                            verbose_name='Тест отзыва')
     score = models.PositiveSmallIntegerField()
     post = models.ForeignKey(
         Post,

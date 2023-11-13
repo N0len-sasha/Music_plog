@@ -25,7 +25,24 @@ body {
   color: red;
 }
 
+.text-blue{
+  color: rgb(0, 4, 248);
+}
+
 .page-item a.page-link {
   background-color: rgba(255, 255, 255, 0.082);
   color: white; 
+}
+
+.stars {
+  font-size: 50px;
+}
+
+.star {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.star.active, .star:hover {
+  color: gold;
 }

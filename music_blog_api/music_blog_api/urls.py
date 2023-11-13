@@ -22,11 +22,19 @@ from django.conf.urls import url
 from drf_yasg import openapi
 from django.conf.urls.static import static
 
+from music_blog.views import RegistrationView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('django.contrib.auth.urls')),
     path('api/', include('api.urls')),
-    path('', include('music_blog.urls', namespace='blog'))
+    path('', include('music_blog.urls', namespace='blog')),
+    path(
+        'auth/registration/',
+        RegistrationView.as_view(),
+        name='registration',
+    ),
 ]
 
 schema_view = get_schema_view(

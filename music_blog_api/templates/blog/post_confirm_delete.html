@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-white">Confirm Deletion</h2>
+    <p class="text-white">Are you sure you want to delete the post "{{ post.name }}"?</p>
+
+    <form method="post" action="{% url 'blog:post_delete' post.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
+      <button type="submit" class="btn btn-danger">Delete</button>
+      <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

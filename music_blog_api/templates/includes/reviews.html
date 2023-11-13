@@ -1,0 +1,49 @@
+{% load static %}
+{% if user.is_authenticated %}
+  {% load django_bootstrap5 %}
+  <h5 class="mb-4">Оставить отзыв</h5>
+  <form method="post" action="{% url 'blog:add_review' post.id %}">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Отправить" %}
+  </form>
+{% endif %}
+<br>
+{% for review in page_obj %}
+  <div class="media mb-4">
+    <div class="media-body">
+      <h5 class="mt-0">
+        <a class="text-black" href="{% url 'blog:profile' review.author.username %}" name="review_{{ review.id }}">
+          {{ review.author.username }}
+        </a>
+      </h5>
+      <small>{{ review.pub_date }}</small>
+      <br>
+      <p class="mb-2">
+        {% for _ in "12345" %}
+          {% if forloop.counter <= review.score %}
+            <img src="{% static 'svg/star-fill.svg' %}" alt="Star">
+          {% else %}
+            <img src="{% static 'svg/star.svg' %}" alt="Star">
+          {% endif %}
+        {% endfor %}
+      </p>
+      <p class="mb-2">{{ review.text|linebreaksbr }}</p>
+      
+    </div>
+    {% if user == review.author %}
+      <div class="d-flex">
+        <a class="btn btn-sm btn-primary me-2" href="#" role="button">
+          Редактировать отзыв
+        </a>
+        <a class="btn btn-sm btn-danger" href="#" role="button">
+          Удалить отзыв
+        </a>
+      </div>
+    {% endif %}
+  </div>
+  {% if not forloop.last %}
+    <hr class="my-2">
+  {% endif %}
+{% endfor %}
+{% include "includes/paginator.html" %}
