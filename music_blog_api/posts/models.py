@@ -62,7 +62,7 @@ class Post(BaseModel):
 
 class Review(BaseModel):
     text = models.CharField(max_length=MAX_DESCTEXT_LENGHT,
-                            verbose_name='Тест отзыва')
+                            verbose_name='Текст отзыва')
     score = models.PositiveSmallIntegerField()
     post = models.ForeignKey(
         Post,
