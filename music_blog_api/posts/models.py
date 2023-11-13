@@ -78,27 +78,15 @@ class Review(BaseModel):
         return self.text[:SLICE_TEXT]
 
 
-class Comment(BaseModel):
-    text = models.TextField(max_length=MAX_DESCTEXT_LENGHT)
-    review = models.ForeignKey(
-        Review,
-        on_delete=models.CASCADE,
-        related_name='comments'
-    )
-
-    class Meta:
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
-
-    def __str__(self):
-        return self.text[:SLICE_TEXT]
-
-
-class Playlist(models.Model):
+class Playlist(BaseModel):
     name = models.CharField(max_length=MAX_NAME_LENGHT)
+    image = models.ImageField(upload_to='images/',
+                              null=True,
+                              blank=True,
+                              verbose_name='Обложка плейлиста')
     posts = models.ManyToManyField(
         Post,
-        related_name='playlist',
+        related_name='posts',
     )
 
     class Meta:

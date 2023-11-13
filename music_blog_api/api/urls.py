@@ -4,7 +4,6 @@ from rest_framework.routers import SimpleRouter
 from .views import (PostViewSet,
                     GenreViewSet,
                     ReviewViewSet,
-                    CommentViewSet,
                     PlaylistViewSet)
 
 router = SimpleRouter()
@@ -13,11 +12,6 @@ router.register(
     r'posts/(?P<post_id>\d+)/reviews',
     ReviewViewSet,
     basename='reviews'
-)
-router.register(
-    r'posts/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments',
-    CommentViewSet,
-    basename='comments'
 )
 router.register(
     r'playlists', PlaylistViewSet, basename='playlists'

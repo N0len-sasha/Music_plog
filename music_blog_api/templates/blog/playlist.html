@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Лента плейлистов
+{% endblock %}
+
+{% block content %}
+  {% for playlist in playlists %}
+    {% include "includes/playlist_card.html" %}
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+{% endblock %}

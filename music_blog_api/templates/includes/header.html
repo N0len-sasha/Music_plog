@@ -15,12 +15,17 @@
                         <li class="nav-item">
                             <a class="nav-link {% if view_name == 'blog:about' %} text-white {% endif %}" href="{% url 'blog:about' %}">О проекте</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if view_name == 'playlists' %} text-white {% endif %}" href="{% url 'blog:playlists' %}">Плейлисты</a>
+                        </li>
                     </ul>
                 </div>
                 {% if user.is_authenticated %}
                     <div class="btn-group" role="group" aria-label="Basic outlined example">
                         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset text-white"
                             href="{% url 'blog:post_create' %}">Написать пост</a></button>
+                        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset text-white"
+                            href="{% url 'blog:playlist_create' %}">Создать плейлист</a></button>
                         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
                             href="{% url 'blog:profile' user.username %}">{{ user.username }}</a></button>
                         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"

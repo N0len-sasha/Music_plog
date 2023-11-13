@@ -29,4 +29,11 @@ urlpatterns = [
     path('posts/<int:post_id>/edit/',
          views.EditPostView.as_view(),
          name='edit_post'),
+    path('playlists/',
+         views.PlayListView.as_view(),
+         name='playlists'),
+    path('playlists/create/',
+         views.CreatePlayListView.as_view(),
+         name='playlist_create')
+
 ]

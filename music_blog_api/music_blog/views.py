@@ -5,13 +5,13 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Avg
+from django.db.models import Avg, Count
 
 
-from .constants import PAGINATION
+from .constants import PAGINATION, PAGINATION_PLAYLIST
 from .forms import PostForm, ReviewForm
 from .mixins import ReviewMixin, PostMixin
-from posts.models import Post, Review
+from posts.models import Post, Review, Playlist
 
 '''Pages'''
 
@@ -123,8 +123,35 @@ class ProfilePageView(ListView):
 
 class RegistrationView(CreateView):
 
-    template_name = "registration/registration_form.html"
+    template_name = 'registration/registration_form.html'
 
     form_class = UserCreationForm
 
     success_url = reverse_lazy("blog:index")
+
+
+'''Playlists'''
+
+
+class PlayListView(ListView):
+    model = Playlist
+    template_name = 'blog/playlist.html'
+    context_object_name = 'playlists'
+    paginate_by = PAGINATION_PLAYLIST
+
+    def get_queryset(self):
+        author = self.request.user
+        queryset = Playlist.objects.filter(author=author).annotate(
+            post_count=Count('posts')
+        )
+        return queryset
+
+
+class CreatePlayListView(CreateView):
+    model = Playlist
+    template_name = 'blog/create_playlist'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.save()
+        return super().form_valid(form)

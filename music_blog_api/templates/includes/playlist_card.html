@@ -1,0 +1,30 @@
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    <div class="card" style="background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7); width: 25rem;">
+        <div class="card-body d-flex align-items-center">
+            <div class="img-container overflow-hidden" style="border-radius: 10px; margin-right: 1rem;">
+                <img src="{{ playlist.image.url }}" class="card-img-top" alt="{{ playlist.name }}">
+            </div>
+            <div style="flex-shrink: 0;">
+                <h5 class="card-title">{{ playlist.name }}</h5>
+                <p class="card-text">
+                    {{ playlist.post_count }} 
+                    {% if playlist.post_count|default:0 == 1 %}
+                        трек
+                    {% elif playlist.post_count|default:0|divisibleby:10 and playlist.post_count|default:0|divisibleby:100 %}
+                        треков
+                    {% else %}
+                        {% if playlist.post_count|default:0|divisibleby:10 %}
+                            трек
+                        {% elif playlist.post_count|default:0|divisibleby:10|add:"-1"|divisibleby:3 %}
+                            трека
+                        {% else %}
+                            треков
+                        {% endif %}
+                    {% endif %}
+                </p>                          
+                <a href="*" class="btn btn-primary">Просмотр</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,11 +1,21 @@
 from django.contrib import admin
-from .models import Playlist, Post, Genre, Review, Comment
+from .models import Playlist, Post, Genre, Review
 
 
+# class PostItemTabular(admin.TabularInline):
+#     model = Post
+
+
+@admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'image')
+
+    # inlines = [
+    #     PostItemTabular,
+    # ]
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'pub_date', 'rating', 'display_genres')
     filter_horizontal = ('genre',)
@@ -16,20 +26,11 @@ class PostAdmin(admin.ModelAdmin):
     display_genres.short_description = 'Genres'
 
 
+@admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug')
 
 
+@admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['id', 'text', 'score', 'post']
-
-
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'text', 'review']
-
-
-admin.site.register(Playlist, PlaylistAdmin)
-admin.site.register(Post, PostAdmin)
-admin.site.register(Genre, GenreAdmin)
-admin.site.register(Review, ReviewAdmin)
-admin.site.register(Comment, CommentAdmin)
