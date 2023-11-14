@@ -14,7 +14,7 @@ from django.db.models import Avg, Count
 from .constants import PAGINATION, PAGINATION_PLAYLIST
 from .forms import (PostForm, ReviewForm,
                     PlayListForm, AddForm, PlaylistPostDeleteForm)
-from .mixins import ReviewMixin, PostMixin, AuthorCheckMixin
+from .mixins import ReviewMixin, PostMixin
 from posts.models import Post, Review, Playlist
 
 '''Pages'''
@@ -140,7 +140,6 @@ class PlayListView(ListView):
     model = Playlist
     template_name = 'blog/playlist.html'
     context_object_name = 'playlists'
-    paginate_by = PAGINATION_PLAYLIST
 
     def get_queryset(self):
         author = self.request.user
