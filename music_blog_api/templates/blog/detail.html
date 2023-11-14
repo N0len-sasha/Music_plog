@@ -12,22 +12,8 @@
           </div>
           <div class="d-flex justify-content-around mt-3">
               <audio id="audioPlayer{{ post.id }}" src="{{ post.audio.url }}" preload="auto"></audio>
-                  <script>
-                      function playAudio{{ post.id }}() {
-                          var audioPlayer = document.getElementById('audioPlayer{{ post.id }}');
-                          
-                          if (audioPlayer.src && not currentlyPlaying) {
-                              if (audioPlayer.paused) {
-                                  audioPlayer.play();
-                              } else {
-                                  audioPlayer.pause();
-                                  audioPlayer.currentTime = 0;
-                              }
-                          }
-                      }
-                  </script>
               <button class="btn" onclick="playAudio{{ post.id }}()">
-                  <img src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
+                  <img id="btnPlayImg" src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
               </button>
               <a href="#" class="d-flex align-items-center justify-content-center">
                   <img src="{% static 'svg/favorites.svg' %}" alt="Favorites" style="width: 3em; height: 3em; border-radius: 50%;">
@@ -59,5 +45,20 @@
         </div>
     </div>
 </div>
-  
+
+<script>
+  function playAudio{{ post.id }}() {
+      var audioPlayer = document.getElementById('audioPlayer{{ post.id }}');
+      var imgElement = document.getElementById('btnPlayImg');
+      
+      if (audioPlayer.src && not currentlyPlaying) {
+          if (audioPlayer.paused) {
+              audioPlayer.play();
+          } else {
+              audioPlayer.pause();
+              audioPlayer.currentTime = 0;
+          }
+      }
+  }
+</script>
 {% endblock %}

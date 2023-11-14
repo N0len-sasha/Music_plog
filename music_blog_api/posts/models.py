@@ -31,6 +31,7 @@ class Genre(models.Model):
 
 class Post(BaseModel):
     name = models.CharField(max_length=MAX_NAME_LENGHT,
+                            unique=True,
                             verbose_name='Название песни')
     image = models.ImageField(upload_to='images/',
                               null=True,
@@ -79,13 +80,16 @@ class Review(BaseModel):
 
 
 class Playlist(BaseModel):
-    name = models.CharField(max_length=MAX_NAME_LENGHT)
+    name = models.CharField(max_length=MAX_NAME_LENGHT,
+                            unique=True,
+                            verbose_name='Название плейлиста')
     image = models.ImageField(upload_to='images/',
                               null=True,
                               blank=True,
                               verbose_name='Обложка плейлиста')
     posts = models.ManyToManyField(
         Post,
+        through='PlaylistPost',
         related_name='posts',
     )
 
@@ -95,3 +99,13 @@ class Playlist(BaseModel):
 
     def __str__(self):
         return self.name[:MAX_NAME_LENGHT]
+
+
+class PlaylistPost(models.Model):
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Связь плейлиста и поста'
+        verbose_name_plural = 'Связи плейлистов и постов'

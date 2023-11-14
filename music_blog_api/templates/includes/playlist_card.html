@@ -22,7 +22,7 @@
                         {% endif %}
                     {% endif %}
                 </p>                          
-                <a href="*" class="btn btn-primary">Просмотр</a>
+                <a href="{% url 'blog:playlist_detail' playlist.id %}" class="btn btn-primary">Просмотр</a>
             </div>
         </div>
     </div>

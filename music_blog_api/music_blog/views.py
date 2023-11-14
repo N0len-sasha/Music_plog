@@ -1,5 +1,8 @@
+from typing import Any
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import (ListView, CreateView,
+                                  DeleteView, UpdateView,
+                                  FormView)
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
@@ -9,8 +12,9 @@ from django.db.models import Avg, Count
 
 
 from .constants import PAGINATION, PAGINATION_PLAYLIST
-from .forms import PostForm, ReviewForm
-from .mixins import ReviewMixin, PostMixin
+from .forms import (PostForm, ReviewForm,
+                    PlayListForm, AddForm, PlaylistPostDeleteForm)
+from .mixins import ReviewMixin, PostMixin, AuthorCheckMixin
 from posts.models import Post, Review, Playlist
 
 '''Pages'''
@@ -74,7 +78,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
                        kwargs={"username": self.request.user.username})
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy("blog:index")
     template_name = 'blog/post_confirm_delete.html'
@@ -102,7 +106,6 @@ class AddReviewView(ReviewMixin, CreateView):
 
 class ProfilePageView(ListView):
     template_name = "blog/profile.html"
-    context_object_name = "page_obj"
     paginate_by = PAGINATION
 
     def get_profile(self):
@@ -147,12 +150,94 @@ class PlayListView(ListView):
         return queryset
 
 
-class CreatePlayListView(CreateView):
+class AddToPlaylistView(LoginRequiredMixin, FormView):
+    template_name = 'blog/add_to_playlist.html'
+    form_class = AddForm
+
+    def get_success_url(self):
+        return reverse('blog:index')
+
+    def get_form_kwargs(self):
+        kwargs = super(AddToPlaylistView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        post_id = self.kwargs['post_id']
+        playlist_id = form.cleaned_data['playlist'].id
+
+        post = get_object_or_404(Post, pk=post_id)
+        playlist = get_object_or_404(Playlist, pk=playlist_id)
+
+        playlist.posts.add(post)
+
+        return super().form_valid(form)
+
+
+class CreatePlayListView(LoginRequiredMixin, CreateView):
     model = Playlist
+    form_class = PlayListForm
     template_name = 'blog/playlist_create.html'
-    fields = ('name', 'image')
+
+    def get_success_url(self):
+        return reverse('blog:playlists')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.save()
         return super().form_valid(form)
+
+
+class PlayListDetailView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'blog/playlist_detail.html'
+    context_object_name = 'posts'
+
+    def get_object(self):
+        playlist = get_object_or_404(Playlist, pk=self.kwargs["playlist_id"])
+        return playlist
+
+    def get_queryset(self):
+        queryset = self.get_object().posts.all()
+        return queryset
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        playlist = self.get_object()
+        context['playlist'] = playlist
+        return context
+
+
+class DeletePlaylistView(LoginRequiredMixin, DeleteView):
+    model = Playlist
+    success_url = reverse_lazy("blog:playlists")
+    template_name = 'blog/playlist_confirm_delete.html'
+    pk_url_kwarg = 'playlist_id'
+
+
+class PostDisableView(FormView):
+    template_name = 'blog/playlist_post_delete.html'
+    form_class = PlaylistPostDeleteForm
+
+    def get_success_url(self):
+        return reverse('blog:playlist_detail',
+                       kwargs={'playlist_id': self.kwargs['playlist_id']})
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        context['playlist'] = get_object_or_404(Playlist,
+                                                pk=self.kwargs["playlist_id"])
+        context['post'] = get_object_or_404(Post,
+                                            pk=self.kwargs["post_id"])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        playlist_id = self.kwargs['playlist_id']
+        post_id = self.kwargs['post_id']
+
+        playlist = get_object_or_404(Playlist, id=playlist_id)
+        post = get_object_or_404(Post, id=post_id)
+
+        playlist.posts.remove(post)
+
+        return self.form_valid(self.get_form())

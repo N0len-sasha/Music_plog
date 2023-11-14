@@ -34,6 +34,17 @@ urlpatterns = [
          name='playlists'),
     path('playlists/create/',
          views.CreatePlayListView.as_view(),
-         name='playlist_create')
-
+         name='playlist_create'),
+    path('playlist/<int:playlist_id>/detail/',
+         views.PlayListDetailView.as_view(),
+         name='playlist_detail'),
+    path('playlist/<int:playlist_id>/delete/',
+         views.DeletePlaylistView.as_view(),
+         name='playlist_delete'),
+    path('favorites_add/<int:post_id>/',
+         views.AddToPlaylistView.as_view(),
+         name='add_to_playlist'),
+    path('playlist/<int:playlist_id>/<int:post_id>/',
+         views.PostDisableView.as_view(),
+         name='delete_from_playlist'),
 ]

@@ -1,1 +1,94 @@
-{% extends base.html %}
+{% extends "base.html" %}
+{% block title %}
+    {{ playlist.name }}
+{% endblock %}
+{% block content %}
+{% load static %}
+    <div class="container mt-5 d-flex justify-content-center align-items-center">
+        <div class="card" style="background: rgba(255, 255, 255, 0.3); border: none; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7); width: 40rem;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <div class="card-body text-center">
+                        <div class="img-container overflow-hidden" style="border-radius: 10px;">
+                            <img class="card-img-top" src="{{ playlist.image.url }}" alt="{{ playlist.name }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+					<div class="card-body" style="font-weight: bold; color: #333;">
+						<h1 class="card-title text-black">{{ playlist.name }}</h2>
+						<p style="font-weight: bold; color: black; font-size: 20px">Треков: {{ playlist.posts.count }}</p>
+                        <div class="audio-controls" style="text-align: left; margin-top: 10px; margin-bottom: 10px;">
+                            <button id="prevBtn" class="btn btn-secondary" onclick="playPrev()">
+                                <img id="playPrevImg" src="{% static 'svg/prev.svg' %}" alt="Previous">
+                            </button>
+                            <button id="playPauseBtn" class="btn btn-primary" onclick="togglePlayPause()">
+                                <img id="playPauseImg" src="{% static 'svg/play.svg' %}" alt="Previous">
+                            </button>
+                            <button id="nextBtn" class="btn btn-secondary" onclick="playNext()">
+                                <img src="{% static 'svg/next.svg' %}" alt="Previous">
+                            </button>
+                        </div>
+                        <audio id="audio-player" style="width: 100%;">
+                            {% for post in posts %}
+                                <source src="{{ post.audio.url }}" type="audio/mp3">
+                            {% endfor %}
+                        </audio>
+						<a class="btn btn-danger" href="{% url 'blog:playlist_delete' playlist.id %}" role="button">
+                            Удалить плейлист
+                        </a>
+					</div>
+				</div>
+            </div>
+            <div class="card-body">
+                {% if not posts %}
+                    <p>Плейлист не содержит треков</p>
+                {% else %}
+                  {% for post in posts %}
+                    {% include 'includes/playlist_post_card.html' %}
+                  {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var audioPlayer = document.getElementById('audio-player');
+        var imgElement = document.getElementById('playPauseImg');
+        var nextBtn = document.getElementById('nextBtn');
+        var prevBtn = document.getElementById('prevBtn');
+        var currentIndex = 0;
+        var audioSources = [
+            {% for post in posts %}
+                "{{ post.audio.url }}",
+            {% endfor %}
+        ];
+    
+        function togglePlayPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                imgElement.src = "{% static 'svg/pause.svg' %}";
+            } else {
+                audioPlayer.pause();
+                imgElement.src = "{% static 'svg/play.svg' %}";
+            }
+        }
+    
+        function playNext() {
+            currentIndex = (currentIndex + 1) % audioSources.length;
+            updateAudioSource();
+        }
+    
+        function playPrev() {
+            currentIndex = (currentIndex - 1 + audioSources.length) % audioSources.length;
+            updateAudioSource();
+        }
+    
+        function updateAudioSource() {
+            audioPlayer.src = audioSources[currentIndex];
+            audioPlayer.load();
+            audioPlayer.play();
+        }
+    </script>
+    
+{% endblock %}

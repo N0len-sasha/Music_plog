@@ -1,0 +1,11 @@
+<div class="playlist-post-card" style="width: 100%; border: none; padding: 10px; margin-bottom: 10px; display: flex; align-items: center; background-color: rgb(0, 0, 0, 0.2); border-radius: 10px;">
+    <img src="{{ post.image.url }}" alt="{{ post.name }}" style="width: 100px; height: 100px; margin-right: 10px; display: block; border-radius: 8px;">
+    <h3 style="margin-right: auto; display: block; color: rgba(46, 44, 57);">{{ post.name }}</h3>
+    <div>
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <a class="btn btn-danger" href="{% url 'blog:delete_from_playlist' playlist.id post.id %}" role="button">
+            Удалить
+        </a>
+    </div>
+</div>

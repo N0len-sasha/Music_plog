@@ -1,18 +1,21 @@
 from django.contrib import admin
-from .models import Playlist, Post, Genre, Review
+from .models import Playlist, Post, Genre, Review, PlaylistPost
 
 
-# class PostItemTabular(admin.TabularInline):
-#     model = Post
+class PostItemTabular(admin.TabularInline):
+    model = PlaylistPost
 
 
 @admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'image')
+    list_display = ('id', 'name', 'image', 'display_posts')
 
-    # inlines = [
-    #     PostItemTabular,
-    # ]
+    def display_posts(self, obj):
+        return ', '.join([post.name for post in obj.posts.all()])
+
+    inlines = [
+        PostItemTabular,
+    ]
 
 
 @admin.register(Post)

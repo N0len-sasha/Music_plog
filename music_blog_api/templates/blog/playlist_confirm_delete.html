@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-white">Подтверждение удаления</h2>
+    <p class="text-white">Вы уверены, что хотите удалить плейлист "{{ playlist.name }}"?</p>
+
+    <form method="post" action="{% url 'blog:playlist_delete' playlist.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
+      <button type="submit" class="btn btn-danger">Удалить</button>
+      <a href="{% url 'blog:playlist_detail' playlist.id %}" class="btn btn-secondary">Отмена</a>
+    </form>
+  </div>
+{% endblock %}
