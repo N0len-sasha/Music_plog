@@ -33,10 +33,10 @@
     </div>
     {% if user == review.author %}
       <div class="d-flex">
-        <a class="btn btn-sm btn-primary me-2" href="#" role="button">
+        <a class="btn btn-sm btn-primary me-2" href="{% url 'blog:update_review' post.id review.id %}" role="button">
           Редактировать отзыв
         </a>
-        <a class="btn btn-sm btn-danger" href="#" role="button">
+        <a class="btn btn-sm btn-danger" href="{% url 'blog:delete_review' post.id review.id %}" role="button">
           Удалить отзыв
         </a>
       </div>

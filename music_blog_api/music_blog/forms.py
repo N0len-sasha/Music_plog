@@ -1,5 +1,6 @@
 from django import forms
 from posts.models import Post, Genre, Review, Playlist
+from django.contrib.auth import get_user_model
 
 
 class PostForm(forms.ModelForm):
@@ -41,6 +42,13 @@ class AddForm(forms.Form):
         if user:
             self.fields['playlist'].queryset = Playlist.objects.filter(
                 author=user)
+
+
+class EditProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = get_user_model()
+        fields = ('first_name', 'last_name', 'email')
 
 
 class PlaylistPostDeleteForm(forms.Form):

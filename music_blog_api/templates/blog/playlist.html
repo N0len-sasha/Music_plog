@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+  {% if not playlists %}
+    <h3 style="color:white">У вас пока нет созданных плейлистов</h3>
+  {% endif %}
   {% for playlist in playlists %}
     {% include "includes/playlist_card.html" %}
   {% endfor %}

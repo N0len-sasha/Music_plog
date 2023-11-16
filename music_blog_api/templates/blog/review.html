@@ -23,7 +23,7 @@
             {% csrf_token %}
             {% if not '/delete_review/' in request.path %}
               <div class="mb-3">
-                <label for="{{ form.review.id_for_label }}" class="form-label">Ревью:</label>
+                <label for="{{ form.review.id_for_label }}" class="form-label">Отзыв:</label>
                 {% bootstrap_form form %}
               </div>
             {% else %}

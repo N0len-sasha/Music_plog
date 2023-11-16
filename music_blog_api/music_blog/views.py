@@ -11,10 +11,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg, Count
 
 
-from .constants import PAGINATION, PAGINATION_PLAYLIST
-from .forms import (PostForm, ReviewForm,
+from .constants import PAGINATION
+from .forms import (PostForm, ReviewForm, EditProfileForm,
                     PlayListForm, AddForm, PlaylistPostDeleteForm)
-from .mixins import ReviewMixin, PostMixin
+from .mixins import ReviewMixin, PostMixin, AuthorCheckMixin
 from posts.models import Post, Review, Playlist
 
 '''Pages'''
@@ -73,6 +73,9 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         form.instance.save()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
     def get_success_url(self):
         return reverse("blog:profile",
                        kwargs={"username": self.request.user.username})
@@ -99,6 +102,14 @@ class AddReviewView(ReviewMixin, CreateView):
         form.instance.post = post
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class ReviewDeleteView(ReviewMixin, AuthorCheckMixin, DeleteView):
+    pass
+
+
+class ReviewUpdateView(ReviewMixin, AuthorCheckMixin, UpdateView):
+    pass
 
 
 '''Auth'''
@@ -133,10 +144,23 @@ class RegistrationView(CreateView):
     success_url = reverse_lazy("blog:index")
 
 
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = EditProfileForm
+    template_name = "blog/user.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse("blog:profile",
+                       kwargs={"username": self.request.user.username})
+
+
 '''Playlists'''
 
 
-class PlayListView(ListView):
+class PlayListView(LoginRequiredMixin, ListView):
     model = Playlist
     template_name = 'blog/playlist.html'
     context_object_name = 'playlists'

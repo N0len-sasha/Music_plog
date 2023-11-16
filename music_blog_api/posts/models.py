@@ -72,6 +72,7 @@ class Review(BaseModel):
     )
 
     class Meta:
+        ordering = ('-pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
@@ -81,7 +82,6 @@ class Review(BaseModel):
 
 class Playlist(BaseModel):
     name = models.CharField(max_length=MAX_NAME_LENGHT,
-                            unique=True,
                             verbose_name='Название плейлиста')
     image = models.ImageField(upload_to='images/',
                               null=True,
