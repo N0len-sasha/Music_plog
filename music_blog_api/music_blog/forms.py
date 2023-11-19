@@ -25,8 +25,10 @@ class ReviewForm(forms.ModelForm):
 
 class PlayListForm(forms.ModelForm):
     posts = forms.ModelMultipleChoiceField(Post.objects.all(),
-                                           widget=forms.CheckboxSelectMultiple)
-    image = forms.FileField(required=True)
+                                           widget=forms.CheckboxSelectMultiple,
+                                           label='Выберите посты: ')
+    image = forms.FileField(required=True,
+                            label='Изображение')
 
     class Meta:
         model = Playlist

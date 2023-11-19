@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% block title %}
-  {% if '/edit_review/' in request.path %}
-    Редактирование комментария
+  {% if '/update_review/' in request.path %}
+    Редактирование отзыва
   {% else %}
-    Удаление комментария
+    Удаление отзыва
   {% endif %}
 {% endblock %}
 {% block content %}
@@ -12,18 +12,17 @@
     <div class="col d-flex justify-content-center">
       <div class="card" style="width: 40rem;">
         <div class="card-header">
-          {% if '/edit_review/' in request.path %}
-            Редактирование комментария
+          {% if '/update_review/' in request.path %}
+            Редактирование отзыва
           {% else %}
-            Удаление комментария
+            Удаление отзыва
           {% endif %}
         </div>
         <div class="card-body">
-          <form method="post" {% if '/edit_review/' in request.path %} action="#" {% endif %}>
+          <form method="post" {% if '/update_review/' in request.path %} action="#" {% endif %}>
             {% csrf_token %}
             {% if not '/delete_review/' in request.path %}
               <div class="mb-3">
-                <label for="{{ form.review.id_for_label }}" class="form-label">Отзыв:</label>
                 {% bootstrap_form form %}
               </div>
             {% else %}
