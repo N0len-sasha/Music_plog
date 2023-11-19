@@ -1,4 +1,5 @@
 from typing import Any
+from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (ListView, CreateView,
                                   DeleteView, UpdateView,
@@ -29,6 +30,12 @@ class IndexView(ListView):
 
     def get_queryset(self):
         queryset = Post.objects.annotate(average_rating=Avg('reviews__score'))
+        search_query = self.request.GET.get('q')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+            )
+
         return queryset
 
 

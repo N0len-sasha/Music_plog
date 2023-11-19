@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block content %}
+  <form class="form-inline my-2 my-lg-0" action="#" method="get">
+    <div class="col-sm-8 col-md-3">
+        <input class="form-control mr-sm-2" name="q" type="text" placeholder="Поиск..." value="{{ request.GET.q }}">
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Искать</button>
+    </div>
+  </form>
   {% for post in posts %}
     {% include "includes/post_card.html" %}
   {% endfor %}
