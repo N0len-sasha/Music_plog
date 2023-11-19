@@ -36,7 +36,7 @@ class IndexView(ListView):
                 Q(name__icontains=search_query)
             )
 
-        return queryset
+        return queryset.order_by('-average_rating')
 
 
 class AboutPageView(TemplateView):
