@@ -1,5 +1,5 @@
 body {
-    background-image: url('/static/img/background.jpg');
+    background-image: url('/static/img/background4.png');
     background-size: cover;
     background-repeat: no-repeat;
   }
@@ -45,4 +45,9 @@ body {
 
 .star.active, .star:hover {
   color: gold;
+}
+
+.larger-text {
+  font-size: 18px;
+  color: #ffffff;
 }
