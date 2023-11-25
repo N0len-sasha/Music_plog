@@ -25,7 +25,7 @@
           <p class="card-text mt-3 text-left detail-bold-large">
             Рейтинг: 
             <span class="{% if average_score >= 4.5 %}text-green{% elif average_score >= 3 %}text-orange{% else %}text-red{% endif %}">
-              {{ average_score }}
+              {{ average_score|floatformat:2 }}
             </span>
           </p>
           <p class="card-text mt-3 text-left detail-bold-large">Автор: {{ post.author }}</p>
