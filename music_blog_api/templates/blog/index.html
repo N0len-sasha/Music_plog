@@ -5,14 +5,12 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-8 col-md-3">
-        <input class="form-control text-white" name="q" type="text" placeholder="Поиск..." value="{{ request.GET.q }}">
+  <form class="form-inline my-2 my-lg-0 d-flex align-items-center" action="#" method="get">
+    <div class="mr-sm-2">
+        <input class="form-control" name="q" type="text" placeholder="Поиск..." value="{{ request.GET.q }}">
     </div>
-    <div class="col-4 col-md-2">
-        <button class="btn btn-success" type="submit">Искать</button>
-    </div>
-  </div>
+    <button class="btn btn-success my-sm-2" type="submit">Искать</button>
+  </form>
   {% for post in posts %}
     {% include "includes/post_card.html" %}
   {% endfor %}

@@ -51,14 +51,17 @@
       var audioPlayer = document.getElementById('audioPlayer{{ post.id }}');
       var imgElement = document.getElementById('btnPlayImg');
       
-      if (audioPlayer.src && not currentlyPlaying) {
+      if (audioPlayer.src) {
           if (audioPlayer.paused) {
               audioPlayer.play();
+              imgElement.src = "{% static 'svg/pause.svg' %}";
           } else {
               audioPlayer.pause();
               audioPlayer.currentTime = 0;
+              imgElement.src = "{% static 'svg/play.svg' %}";
           }
       }
   }
 </script>
+
 {% endblock %}

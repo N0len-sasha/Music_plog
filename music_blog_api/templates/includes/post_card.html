@@ -11,21 +11,8 @@
                 <img src="{% static 'svg/detail.svg' %}" alt="Detail" style="width: 2em; height: 2em; border-radius: 50%;">
             </a>
             <audio id="audioPlayer{{ post.id }}" src="{{ post.audio }}" preload="auto"></audio>
-                <script>
-                    function playAudio{{ post.id }}() {
-                        var audioPlayer = document.getElementById('audioPlayer{{ post.id }}');
-                        
-                        if (audioPlayer.src) {
-                            if (audioPlayer.paused) {
-                                audioPlayer.play();
-                            } else {
-                                audioPlayer.pause();
-                            }
-                        }
-                    }
-                </script>
-            <button class="btn" onclick="playAudio{{ post.id }}()">
-                <img src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
+            <button class="btn" onclick="toggleAudio('{{ post.id }}')">
+                <img id="playPauseIcon{{ post.id }}" src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
             </button>
             <a href="{% url 'blog:add_to_playlist' post.id %}" class="d-flex align-items-center justify-content-center">
                 <img src="{% static 'svg/favorites.svg' %}" alt="Favorites" style="width: 2em; height: 2em; border-radius: 50%;">
@@ -38,3 +25,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleAudio(postId) {
+        var audioPlayer = document.getElementById('audioPlayer' + postId);
+        var playPauseIcon = document.getElementById('playPauseIcon' + postId);
+
+        if (audioPlayer.src) {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseIcon.src = "{% static 'svg/pause.svg' %}";
+            } else {
+                audioPlayer.pause();
+                playPauseIcon.src = "{% static 'svg/play.svg' %}";
+            }
+        }
+    }
+</script>
