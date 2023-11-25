@@ -16,3 +16,16 @@
   {% endfor %}
   {% include "includes/paginator.html" %}
 {% endblock %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      var audioPlayer = document.getElementById('audioPlayer');
+
+      if (audioPlayer) {
+          var isPlaying = localStorage.getItem('isPlaying');
+
+          if (isPlaying === 'true') {
+              audioPlayer.play();
+          }
+      }
+  });
+</script>

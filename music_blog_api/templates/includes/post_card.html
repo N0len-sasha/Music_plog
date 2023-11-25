@@ -10,7 +10,7 @@
             <a href="{% url 'blog:post_detail' post.id %}" class="d-flex align-items-center justify-content-center">
                 <img src="{% static 'svg/detail.svg' %}" alt="Detail" style="width: 2em; height: 2em; border-radius: 50%;">
             </a>
-            <audio id="audioPlayer{{ post.id }}" src="{{ post.audio }}" preload="auto"></audio>
+            <audio id="audioPlayer{{ post.id }}" src="{{ post.audio.url }}" preload="auto"></audio>
             <button class="btn" onclick="toggleAudio('{{ post.id }}')">
                 <img id="playPauseIcon{{ post.id }}" src="{% static 'svg/play.svg' %}" alt="Play" style="width: 4em; height: 4em; border-radius: 50%;">
             </button>
